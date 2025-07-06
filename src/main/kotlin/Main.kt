@@ -1,16 +1,22 @@
 package org.example
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+fun parseInt(input: String): Either<String, Int> =
+    input.toIntOrNull()?.right() ?: "Invalid number: $input".left()
+
+fun main(args: Array<String>) {
+    if (args.isEmpty()) {
+        println("Please provide a number")
+        return
+    }
+    val input = args[0]
+
+    val result = parseInt(input)
+    when (result) {
+        is Either.Left -> println("Error: ${result.value}")
+        is Either.Right -> println("Parsed number: ${result.value}")
     }
 }
