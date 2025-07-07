@@ -9,7 +9,7 @@ fun parseInt(input: String): Either<String, Int> =
 
 fun main(args: Array<String>) {
     val input = if (args.isNotEmpty()) {
-            args.joinToString(" ")
+            args.first()
         } else {
             print("Enter a number: ")
             readLine() ?: ""
