@@ -9,6 +9,7 @@ class Quantity private constructor (val amount: Double, val unit: String) {
        operator fun invoke(amount: String, unit: String): Either<Error, Quantity> =
            either {
                ensure(amount.isNotEmpty()) { Error("Amount cannot be empty") }
+               ensure(unit.isNotEmpty()) { Error("Unit cannot be empty") }
                Quantity(amount.toDouble(), unit)
            }
     }
