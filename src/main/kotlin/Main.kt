@@ -7,9 +7,13 @@ import arrow.core.right
 fun parseInt(input: String): Either<String, Int> =
     input.toIntOrNull()?.right() ?: "Invalid number: $input".left()
 
-fun main() {
-    print("Enter a number: ")
-    val input = readLine() ?: ""
+fun main(args: Array<String>) {
+    val input = if (args.isNotEmpty()) {
+            args.joinToString(" ")
+        } else {
+            print("Enter a number: ")
+            readLine() ?: ""
+        }
 
     val result = parseInt(input)
     when (result) {
