@@ -15,11 +15,23 @@ class QuantityTest : StringSpec({
     }
     "should reject empty amount" {
         val result = Quantity("", "kg").shouldBeLeft()
-        result.message shouldBe "Amount cannot be empty"
+        result.message shouldBe "Amount cannot be empty or blank"
     }
     "should reject empty unit" {
         val result = Quantity("6", "").shouldBeLeft()
-        result.message shouldBe "Unit cannot be empty"
+        result.message shouldBe "Unit cannot be empty or blank"
+    }
+    "should reject non-numeric amount" {
+        val result = Quantity("abc", "kg").shouldBeLeft()
+        result.message shouldBe "Invalid number: abc"
+    }
+    "should reject blank amount" {
+        val result = Quantity(" ", "kg").shouldBeLeft()
+        result.message shouldBe "Amount cannot be empty or blank"
+    }
+    "should reject blank unit" {
+        val result = Quantity("6", "").shouldBeLeft()
+        result.message shouldBe "Unit cannot be empty or blank"
     }
 })
 
