@@ -5,21 +5,19 @@ import arrow.core.raise.either
 import arrow.core.raise.ensure
 
 class Unit private constructor(
-    val label: String,
-    val tags: List<String>,
     val aliases: List<String>,
     val conversionTo: Map<String, Double>
 ) {
     companion object {
         operator fun invoke(
-            label: String,
-            tags: List<String>,
             aliases: List<String>,
-            conversionTo: Map<String, Double>
+            conversionTo: Map<String, String>
         ): Either<Error, Unit> =
             either {
-                ensure(label.isNotBlank()) { Error("Label cannot be empty or blank") }
-                Unit(label, tags, aliases, conversionTo)
+                ensure(aliases.isNotEmpty()) {Error("Aliases cannot be empty") }
+                ensure(aliases.all { it.isNotBlank() }) { Error("Aliases cannot contain blank or empty values") }
+                ensure(conversionTo.isNotEmpty()) { Error("Conversion map cannot be empty") }
+                Unit(aliases, conversionTo.mapValues { it.value.toDouble() })
             }
     }
 }

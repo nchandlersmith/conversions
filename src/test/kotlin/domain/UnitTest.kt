@@ -8,18 +8,31 @@ import org.example.domain.Unit
 
 class UnitTest : StringSpec({
     "should create a Unit with valid parameters" {
-        val result = Unit("meter", listOf("length"), listOf("m"), mapOf("kilometer" to 0.001)).shouldBeRight()
-        result.label shouldBe "meter"
-        result.tags shouldBe listOf("length")
-        result.aliases shouldBe listOf("m")
-        result.conversionTo shouldBe mapOf("kilometer" to 0.001)
+        val expectedAliases = listOf("m", "meter")
+        val conversionTo = mapOf("cm" to "100.0", "km" to "0.001")
+        val expectedConversionTo = mapOf("cm" to 100.0, "km" to 0.001)
+        val result = Unit(expectedAliases, conversionTo).shouldBeRight()
+        result.aliases shouldBe expectedAliases
+        result.conversionTo shouldBe expectedConversionTo
     }
-    "should reject empty label" {
-        val result = Unit("", listOf("length"), listOf("m"), mapOf("kilometer" to 0.001)).shouldBeLeft()
-        result.message shouldBe "Label cannot be empty or blank"
+    "should reject empty aliases" {
+        val result = Unit(emptyList(), mapOf("cm" to "100.0")).shouldBeLeft()
+        result.message shouldBe "Aliases cannot be empty"
     }
-    "should reject blank label" {
-        val result = Unit("   ", listOf("length"), listOf("m"), mapOf("kilometer" to 0.001)).shouldBeLeft()
-        result.message shouldBe "Label cannot be empty or blank"
+    "should reject blank aliases" {
+        val result = Unit(listOf(" "), mapOf("cm" to "100.0")).shouldBeLeft()
+        result.message shouldBe "Aliases cannot contain blank or empty values"
+    }
+    "should reject aliases containing empty strings" {
+        val result = Unit(listOf(""), mapOf("cm" to "100.0")).shouldBeLeft()
+        result.message shouldBe "Aliases cannot contain blank or empty values"
+    }
+    "should reject empty conversion map" {
+        val result = Unit(listOf("m"), emptyMap()).shouldBeLeft()
+        result.message shouldBe "Conversion map cannot be empty"
+    }
+    "should reject empty conversion map" {
+        val result = Unit(listOf("m"), emptyMap()).shouldBeLeft()
+        result.message shouldBe "Conversion map cannot be empty"
     }
 })
