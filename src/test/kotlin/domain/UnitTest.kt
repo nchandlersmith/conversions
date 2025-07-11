@@ -31,8 +31,9 @@ class UnitTest : StringSpec({
         val result = Unit(listOf("m"), emptyMap()).shouldBeLeft()
         result.message shouldBe "Conversion map cannot be empty"
     }
-    "should reject empty conversion map" {
-        val result = Unit(listOf("m"), emptyMap()).shouldBeLeft()
-        result.message shouldBe "Conversion map cannot be empty"
+    "should reject invalid conversion map" {
+        val conversionMap = mapOf("cm" to "foo")
+        val result = Unit(listOf("m"), conversionMap).shouldBeLeft()
+        result.message shouldBe "Conversion map invalid"
     }
 })

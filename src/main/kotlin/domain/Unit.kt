@@ -17,6 +17,7 @@ class Unit private constructor(
                 ensure(aliases.isNotEmpty()) {Error("Aliases cannot be empty") }
                 ensure(aliases.all { it.isNotBlank() }) { Error("Aliases cannot contain blank or empty values") }
                 ensure(conversionTo.isNotEmpty()) { Error("Conversion map cannot be empty") }
+                ensure(conversionTo.values.all { it.toDoubleOrNull() != null }) { Error("Conversion map invalid") }
                 Unit(aliases, conversionTo.mapValues { it.value.toDouble() })
             }
     }
