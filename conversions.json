@@ -1,0 +1,13 @@
+{
+  "units": [
+    {
+      "aliases": [
+        "m"
+      ],
+      "conversionTo": {
+        "cm": 100.0,
+        "km": 0.001
+      }
+    }
+  ]
+}
